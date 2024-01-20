@@ -2,8 +2,9 @@
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
+import "./DropFile.css";
 
-export const DropFile = ({ readFile }: any) => {
+export const DropFile = ({ readFile, title }: any) => {
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
 
@@ -31,13 +32,14 @@ export const DropFile = ({ readFile }: any) => {
         borderRadius: 2,
         borderColor: '#dcdcdc',
         borderStyle: 'dashed',
-        color: '#90EE90',
+        color: "#999999",
         transition: 'border .24s ease-in-out',
-        backgroundColor: isDragActive ? "#000000" : "#f6f6f6",        
+        backgroundColor: isDragActive ? "#000000" : "#f6f6f6",
       }}
     >
-      <p>Drag & drop a CSV file here, or click to select one</p>
-
+      <div className="title-box">
+        {title.length > 0 ? <p>📁 {title}</p> : <p>Drag & drop a CSV file here, or click to select one</p>}
+      </div>
       <input {...getInputProps()} />
     </div>
   );

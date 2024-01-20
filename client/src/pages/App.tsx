@@ -6,10 +6,8 @@ import { Heading, Button } from '@chakra-ui/react'
 
 import './App.css';
 
-
 function App() {
-  
-  const { readFile, data } = useFile();
+  const { readFile, data, title } = useFile();
 
   const handleSubmit = () => {
     postFile(data);
@@ -17,18 +15,17 @@ function App() {
 
   return (
     <div className="main-container">
-    <div className='landing-section'>
-    <Heading as='h1' noOfLines={1}>
-      Repair Service Scheduler 
-    </Heading>
-    </div>
-
-    <div className='file-upload-section'>
-      <div className = 'file-upload-section-div'>
-      <DropFile className = "file-upload-section" readFile={readFile} />
+      <div className='landing-section'>
+        <Heading as='h1' noOfLines={1}>
+          Repair Service Scheduler
+        </Heading>
       </div>
-      <Button className = 'upload-file-button' onClick={handleSubmit}>Upload</Button>
-    </div>
+      <div className='file-upload-section'>
+        <div className='file-upload-section-div'>
+          <DropFile className="file-upload-section" readFile={readFile} title={title} />
+        </div>
+      </div>
+      <Button className='upload-file-button' onClick={handleSubmit} mx="auto" display="block">Upload</Button>
     </div>
   );
 }
