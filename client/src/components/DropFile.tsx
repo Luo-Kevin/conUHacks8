@@ -22,12 +22,18 @@ export const DropFile = ({ readFile }: any) => {
     <div
       {...getRootProps()}
       style={{
-        border: "2px solid #000000",
-        borderRadius: "4px",
-        padding: "20px",
-        textAlign: "center",
-        cursor: "pointer",
-        backgroundColor: isDragActive ? "#000000" : "#ffffff",
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        padding: '20px',
+        borderWidth: 2,
+        borderRadius: 2,
+        borderColor: '#dcdcdc',
+        borderStyle: 'dashed',
+        color: '#90EE90',
+        transition: 'border .24s ease-in-out',
+        backgroundColor: isDragActive ? "#000000" : "#f6f6f6",        
       }}
     >
       <p>Drag & drop a CSV file here, or click to select one</p>
