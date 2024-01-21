@@ -23,7 +23,7 @@ function App() {
     setTimeout(() => {
       setLoadingStatus(LoadingStatus.LOADED);
     }, 1000);
-    //postFile(data);
+    postFile(data);
   };
 
   return (
