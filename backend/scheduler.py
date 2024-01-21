@@ -16,6 +16,12 @@ def schedule_car_repairs(df):
         appointment_time = row["appointment_date"]
         check_bay_status(appointment_time)
 
+        # if end time greater than 7pm set status to turned over
+        if row["appointment_end_date"].hour >= 19:
+            df.at[index, 'status'] = 'turned over'
+            df.at[index, 'reason'] = 'after 7pm'
+            continue
+
         # FIXME: Improve greedy selection of next appointment
         # if row['status'] == 'turned over':
         #     continue
@@ -87,9 +93,6 @@ def schedueler(df):
                         ascending=[True, True, False])
 
     optimized_df = df.copy()
-
-    # Discard the booking after 7pm, they are lost anyways
-    optimized_df = discard_booking_over_7pm(optimized_df)
 
     optimized_df["reason"] = ""
 
