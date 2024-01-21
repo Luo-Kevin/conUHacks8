@@ -91,20 +91,28 @@ def schedule_car_repairs(df):
             utils.service_bays_status[vehicle_type] = row["appointment_end_date"]
             df.at[index, 'reason'] = 'reserved bay'
             df.at[index, 'status'] = 'scheduled'
+            bay_name = f"{vehicle_type} bay"
+            df.at[index, 'bay'] = bay_name
+
         # check if it can take one of the any bays, if so take it
         elif utils.service_bays_status["any1"] == "" and has_better_next_profit <= available_bays:
             utils.service_bays_status["any1"] = row["appointment_end_date"]
+            df.at[index, 'bay'] = 'any1'
             df.at[index, 'status'] = 'scheduled'
         elif utils.service_bays_status["any2"] == "" and has_better_next_profit <= available_bays:
+            df.at[index, 'bay'] = 'any2'
             utils.service_bays_status["any2"] = row["appointment_end_date"]
             df.at[index, 'status'] = 'scheduled'
         elif utils.service_bays_status["any3"] == "" and has_better_next_profit <= available_bays:
+            df.at[index, 'bay'] = 'any3'
             utils.service_bays_status["any3"] = row["appointment_end_date"]
             df.at[index, 'status'] = 'scheduled'
         elif utils.service_bays_status["any4"] == "" and has_better_next_profit <= available_bays:
+            df.at[index, 'bay'] = 'any4'
             utils.service_bays_status["any4"] = row["appointment_end_date"]
             df.at[index, 'status'] = 'scheduled'
         elif utils.service_bays_status["any5"] == "" and has_better_next_profit <= available_bays:
+            df.at[index, 'bay'] = 'any5'
             utils.service_bays_status["any5"] = row["appointment_end_date"]
             df.at[index, 'status'] = 'scheduled'
         else:
@@ -137,6 +145,8 @@ def schedueler(df):
     optimized_df = discard_booking_over_7pm(optimized_df)
 
     optimized_df["reason"] = ""
+
+    optimized_df["bay"] = ""
 
     # Schedule the bookings
     optimized_df = schedule_car_repairs(optimized_df)
