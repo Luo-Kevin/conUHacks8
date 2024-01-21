@@ -21,7 +21,19 @@ def index():
 
 @app.route("/upload", methods=["POST"])
 def api():
-    print("Hello")
+    utils.service_bays_status = {
+        "compact": "",
+        "medium": "",
+        "full-size": "",
+        "class 1 truck": "",
+        "class 2 truck": "",
+        "any1": "",
+        "any2": "",
+        "any3": "",
+        "any4": "",
+        "any5": "",
+    }
+
    # get body from request
     body = json.loads(request.data)
 
