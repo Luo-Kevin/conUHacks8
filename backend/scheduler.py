@@ -134,7 +134,7 @@ def schedueler(df):
     optimized_df = df.copy()
 
     # Discard the booking after 7pm, they are lost anyways
-    optimized_df = discard_booking_over_7pm(df, optimized_df)
+    optimized_df = discard_booking_over_7pm(optimized_df)
 
     optimized_df["reason"] = ""
 
