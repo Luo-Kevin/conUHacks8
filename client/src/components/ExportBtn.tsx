@@ -19,7 +19,7 @@ function ExportBtn({ data }: any) {
 
     return (
         <Button mx="auto">
-            <CSVLink data={data} headers={headers}>
+            <CSVLink data={data} headers={headers} filename="Schedule">
                 Export
             </CSVLink>
         </Button>
