@@ -5,9 +5,9 @@ import utils
 # Function to check if the end time of the appointment is over 7pm, if it is, we set the attribute of status
 # in the optimized dataframe to "turned over"
 def discard_booking_over_7pm(optimized_df):
-    # remove all end time over 7pm
-    optimized_df = optimized_df[optimized_df['appointment_end_date'] < pd.to_datetime(
-        '2021-01-01 19:00:00')]
+    # assign turnover status to end date over 7pm
+    optimized_df.loc[optimized_df['appointment_end_date'].dt.hour >= 19,
+                     'status'] = 'turned over'
 
     return optimized_df
 
@@ -70,6 +70,9 @@ def schedule_car_repairs(df):
         appointment_time = row["appointment_date"]
         check_bay_status(appointment_time)
 
+        if row['status'] == 'turned over':
+            continue
+
         if appointment_time > thirty_min_later:
             count = 0
             thirty_min_later = appointment_time + pd.Timedelta("30 minutes")
@@ -131,7 +134,7 @@ def schedueler(df):
     optimized_df = df.copy()
 
     # Discard the booking after 7pm, they are lost anyways
-    optimized_df = discard_booking_over_7pm(optimized_df)
+    optimized_df = discard_booking_over_7pm(df, optimized_df)
 
     optimized_df["reason"] = ""
 
