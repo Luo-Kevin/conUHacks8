@@ -213,6 +213,7 @@ def schedueler(df):
         "class_2_serviced": class_2_serviced,
         "serviced_vehicles_schedule": serviced_vehicles_schedule.to_dict('records'),
         "turnover_vehicles_schedule": turnover_vehicles_schedule.to_dict('records'),
+
     }
 
     return result
