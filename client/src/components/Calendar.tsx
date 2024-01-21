@@ -28,12 +28,12 @@ interface Appointment {
     }
   
     // Parse the schedule data to format suitable for FullCalendar
-    const events = data && data.schedule ? data.schedule.map((appointment: Appointment) => ({
+    const events = data.schedule.map((appointment: Appointment) => ({
         title: appointment.vehicle_type,
         start: new Date(appointment.appointment_date),
         end: new Date(appointment.appointment_end_date),
         description: `Revenue: ${appointment.revenue} - Status: ${appointment.status || 'Scheduled'}`,
-      })) : [];
+      }));
 
     function renderEventContent(eventInfo: any) {
 
