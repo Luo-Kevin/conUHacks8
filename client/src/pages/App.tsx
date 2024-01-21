@@ -17,19 +17,16 @@ function App() {
     LOADED,
   }
   const [loadingStatus, setLoadingStatus] = React.useState<LoadingStatus>(LoadingStatus.INIT);
-  const [results, setResults] = React.useState<any>(null);
+  const [results, setResults] = React.useState<any>(null)
 
   const handleSubmit = async () => {
-    if (!data) {
-      return;
-    }
-
     setLoadingStatus(LoadingStatus.LOADING);
+
     const response = await postFile(data);
     if (response) {
-      setResults(response);
-      setLoadingStatus(LoadingStatus.LOADED);
-      console.log(response);
+      setResults(response)
+      console.log(response)
+      setLoadingStatus(LoadingStatus.LOADED)
     }
   };
 
@@ -54,7 +51,7 @@ function App() {
       >
         Upload
       </Button>
-      
+
       {loadingStatus === LoadingStatus.LOADING && (
         <div className="spinner">
           <Spinner thickness="4px" emptyColor="gray.200" color="blue.500" size="xl" />
@@ -81,7 +78,7 @@ function App() {
             />
           </div>
           <div className="result-section-calendar">
-            <Calendar />
+            <Calendar data={results} />
           </div>
         </div>
       )}

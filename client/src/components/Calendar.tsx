@@ -4,49 +4,60 @@ import moment from 'moment';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
-import "./DropFile.css";
+import "./Calendar.css";
 
-export const Calendar = () => {
-
-    const events = [
-        {
-            title: 'compact car',
-            description: 'service bay: any 5 - compact car',
-            start: '2022-10-12T10:30:00',
-            end: '2022-10-12T11:00:00',
-            backgroundColor: '#D1FFBD'
-        },
-        {
-            title: 'c1 class truck',
-            description: 'service bay: c1 class truck - c1 class truck',
-            start: '2022-10-15T16:48:00',
-            end: '2022-10-15T17:48:00',
-            backgroundColor: '#FFFF9E'
-        },
-        {
-            title: 'c2 class truck',
-            description: 'service bay: c2 class truck - c2 class truck',
-            start: '2022-10-13T10:30:00',
-            end: '2022-10-13T12:30:00',
-            backgroundColor: '#FFCCCB'
-        }
-    ]
+interface Appointment {
+    vehicle_type: string;
+    appointment_date: string;
+    appointment_end_date: string;
+    revenue: number;
+    status?: string;
+    backgroundColor?:string;
+  }
+  
+  interface Props {
+    data: {
+        serviced_vehicles_schedule: any;
+        schedule: Appointment[];
+    } | null; 
+  }
+  
+ export const Calendar: React.FC<Props> = ({ data }) => {
+    if (!data) {
+      // Render some loading state or return null if data is not available
+      return null;
+    }
+  
+    // Parse the schedule data to format suitable for FullCalendar
+    const events = data.serviced_vehicles_schedule.map((appointment: Appointment) => ({
+        title: appointment.vehicle_type,
+        start: new Date(appointment.appointment_date),
+        end: new Date(appointment.appointment_end_date),
+        description: `Revenue: ${appointment.revenue} - Status: ${appointment.status || 'Scheduled'}`,
+      }));
 
     function renderEventContent(eventInfo: any) {
+
+        const colorMapping = {
+            'compact': '#D1FFBD',
+            'medium': '#D1FFBD',
+            'full-size': '#D1FFBD',
+            'class 1 truck': '#FFFF9E',
+            'class 2 truck': '#FFCCCB',
+          };
+
         const eventStyle = {
-          backgroundColor: eventInfo.event.backgroundColor, // Use the backgroundColor from the event
-          padding: '5px',
+          backgroundColor: (colorMapping as any)[eventInfo.event.title] || '#D1D1D1', 
           borderRadius: '3px',
-          color: '#00008B', // Set text color to white for better visibility
+          color: '#00008B', 
           width:"100%",
           height:"120%"
         };
 
-
         const descriptionStyle = {
             width: '100%',
-            overflow: 'hidden', // Ensure overflow is set to 'hidden' to contain text within the width
-            whiteSpace: 'normal', // Allow text to wrap within the container
+            overflow: 'hidden', 
+            whiteSpace: 'normal',
           };
 
           const startTime = moment(eventInfo.event.start).format('h:mm A');
@@ -59,7 +70,6 @@ export const Calendar = () => {
             <p style={{width:"100%"}}>{eventInfo.event.title}</p>
             <br></br>
             <p style={descriptionStyle}>{eventInfo.event.extendedProps.description}</p>
-            <p style={descriptionStyle}>TIME</p>
           </div>
         );
       }
@@ -69,6 +79,8 @@ export const Calendar = () => {
         <FullCalendar
           plugins={[dayGridPlugin]}
           weekends={true}
+          initialDate={"2022-10-01"}
+          initialView={'dayGridWeek'}
           headerToolbar={{
             right: 'prev,next',
             center: 'title',
