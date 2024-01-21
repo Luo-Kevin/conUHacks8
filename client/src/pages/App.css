@@ -1,0 +1,40 @@
+.main-container {
+  width: 80%;
+  margin: auto auto;
+  margin-top: 10%;
+}
+
+.landing-section {
+  text-align: center;
+  margin: 0 0 0 0;
+}
+
+.file-upload-section {
+  margin-top: 50px;
+  padding: 0 10%;
+}
+
+.file-upload-section-div {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 40px;
+}
+
+.spinner {
+  margin: 50px auto;
+  text-align: center;
+}
+
+.result-section {
+  margin: auto auto;
+  margin-top: 40px;
+}
+
+.result-section-div {
+  margin-bottom: 40px;
+}
+
+.btn-section {
+  display: flex;
+  margin: auto auto;
+  align-items: center;
+}
