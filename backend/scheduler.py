@@ -28,11 +28,10 @@ def get_total_lost_revenue(df):
 
 
 def get_total_revenue(df):
-    turned_over_appointments = df[df['status'] != 'turned over']
+    schedueled = df[df['status'] == 'scheduled']
+    get_total_revenue = schedueled['revenue'].sum()
 
-    total_lost_revenue = turned_over_appointments['revenue'].sum()
-
-    return total_lost_revenue
+    return get_total_revenue
 
 
 def check_bay_status(current_time):
@@ -92,20 +91,23 @@ def schedule_car_repairs(df):
         if vehicle_type in utils.service_bays_status and utils.service_bays_status[vehicle_type] == "":
             utils.service_bays_status[vehicle_type] = row["appointment_end_date"]
             df.at[index, 'reason'] = 'reserved bay'
+            df.at[index, 'status'] = 'scheduled'
         # check if it can take one of the any bays, if so take it
         elif utils.service_bays_status["any1"] == "" and has_better_next_profit <= available_bays:
             utils.service_bays_status["any1"] = row["appointment_end_date"]
+            df.at[index, 'status'] = 'scheduled'
         elif utils.service_bays_status["any2"] == "" and has_better_next_profit <= available_bays:
             utils.service_bays_status["any2"] = row["appointment_end_date"]
+            df.at[index, 'status'] = 'scheduled'
         elif utils.service_bays_status["any3"] == "" and has_better_next_profit <= available_bays:
-
             utils.service_bays_status["any3"] = row["appointment_end_date"]
+            df.at[index, 'status'] = 'scheduled'
         elif utils.service_bays_status["any4"] == "" and has_better_next_profit <= available_bays:
-
             utils.service_bays_status["any4"] = row["appointment_end_date"]
+            df.at[index, 'status'] = 'scheduled'
         elif utils.service_bays_status["any5"] == "" and has_better_next_profit <= available_bays:
-
             utils.service_bays_status["any5"] = row["appointment_end_date"]
+            df.at[index, 'status'] = 'scheduled'
         else:
             df.at[index, 'status'] = 'turned over'
             df.at[index, 'reason'] = 'no bay available'
@@ -154,6 +156,26 @@ def schedueler(df):
         str)
 
     # number of turnover compact cars
+    compact_serviced = optimized_df[(optimized_df['vehicle_type'] == 'compact') & (
+        optimized_df['status'] == 'scheduled')].shape[0]
+
+    # number of turnover medium cars
+    medium_serviced = optimized_df[(optimized_df['vehicle_type'] == 'medium') & (
+        optimized_df['status'] == 'scheduled')].shape[0]
+
+    # number of turnover full-size cars
+    full_size_serviced = optimized_df[(optimized_df['vehicle_type'] == 'full-size') & (
+        optimized_df['status'] == 'scheduled')].shape[0]
+
+    # number of turnover class 1 trucks
+    class_1_serviced = optimized_df[(optimized_df['vehicle_type'] == 'class 1 truck') & (
+        optimized_df['status'] == 'scheduled')].shape[0]
+
+    # number of turnover class 2 trucks
+    class_2_serviced = optimized_df[(optimized_df['vehicle_type'] == 'class 2 truck') & (
+        optimized_df['status'] == 'scheduled')].shape[0]
+
+    # number of turnover compact cars
     compact_turnover = optimized_df[(optimized_df['vehicle_type'] == 'compact') & (
         optimized_df['status'] == 'turned over')].shape[0]
 
@@ -175,26 +197,6 @@ def schedueler(df):
 
     # -----------------------------
 
-    # number of turnover compact cars
-    compact_serviced = optimized_df[(optimized_df['vehicle_type'] == 'compact') & (
-        optimized_df['status'] != 'turned over')].shape[0]
-
-    # number of turnover medium cars
-    medium_serviced = optimized_df[(optimized_df['vehicle_type'] == 'medium') & (
-        optimized_df['status'] != 'turned over')].shape[0]
-
-    # number of turnover full-size cars
-    full_size_serviced = optimized_df[(optimized_df['vehicle_type'] == 'full-size') & (
-        optimized_df['status'] != 'turned over')].shape[0]
-
-    # number of turnover class 1 trucks
-    class_1_serviced = optimized_df[(optimized_df['vehicle_type'] == 'class 1 truck') & (
-        optimized_df['status'] != 'turned over')].shape[0]
-
-    # number of turnover class 2 trucks
-    class_2_serviced = optimized_df[(optimized_df['vehicle_type'] == 'class 2 truck') & (
-        optimized_df['status'] != 'turned over')].shape[0]
-
     result = {
         "revenue": revenue,
         "lost_revenue": lost_revenue,
@@ -204,11 +206,11 @@ def schedueler(df):
         "full_size_turnover": full_size_turnover,
         "class_1_turnover": class_1_turnover,
         "class_2_turnover": class_2_turnover,
-        "compact_serviced": compact_serviced,
-        "medium_serviced": medium_serviced,
-        "full_size_serviced": full_size_serviced,
-        "class_1_serviced": class_1_serviced,
-        "class_2_serviced": class_2_serviced,
+        # "compact_serviced": compact_serviced,
+        # "medium_serviced": medium_serviced,
+        # "full_size_serviced": full_size_serviced,
+        # "class_1_serviced": class_1_serviced,
+        # "class_2_serviced": class_2_serviced,
 
         "schedule": optimized_df.to_dict(orient='records')
     }
