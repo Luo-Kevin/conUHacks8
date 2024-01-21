@@ -17,6 +17,7 @@ interface Appointment {
   
   interface Props {
     data: {
+        serviced_vehicles_schedule: any;
         schedule: Appointment[];
     } | null; 
   }
@@ -28,7 +29,7 @@ interface Appointment {
     }
   
     // Parse the schedule data to format suitable for FullCalendar
-    const events = data.schedule.map((appointment: Appointment) => ({
+    const events = data.serviced_vehicles_schedule.map((appointment: Appointment) => ({
         title: appointment.vehicle_type,
         start: new Date(appointment.appointment_date),
         end: new Date(appointment.appointment_end_date),
