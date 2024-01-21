@@ -6,10 +6,12 @@ from scheduler_utils import *
 # Algo
 def schedule_car_repairs(df):
     appointment_time = df.iloc[0]['appointment_date']
-    thirty_min_later = appointment_time + pd.Timedelta("10 minutes")
-    next_appointments = df[(df['appointment_date'] >= appointment_time) & (
-        df['appointment_date'] <= appointment_time + pd.Timedelta("30 minutes"))]
-    count = 0
+
+    # FIXME: Improve greedy selection of next appointment
+    # thirty_min_later = appointment_time + pd.Timedelta("10 minutes")
+    # next_appointments = df[(df['appointment_date'] >= appointment_time) & (
+    #     df['appointment_date'] <= appointment_time + pd.Timedelta("30 minutes"))]
+    # count = 0
 
     for index, row in df.iterrows():
         vehicle_type = row["vehicle_type"]
@@ -36,8 +38,6 @@ def schedule_car_repairs(df):
         #     next_appointments, count)
 
         # count += 1
-
-        available_bays = count_bays_available()
 
         # set the service bay to busy when category of the vehicle corresponds
         if vehicle_type in utils.service_bays_status and utils.service_bays_status[vehicle_type] == "":
@@ -72,8 +72,6 @@ def schedule_car_repairs(df):
             df.at[index, 'status'] = 'turned over'
             df.at[index, 'reason'] = 'no bay available'
 
-            # turned_over_appointments = df[df['status'] == 'turned over']
-            #
     return df
 
 
