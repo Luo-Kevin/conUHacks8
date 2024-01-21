@@ -190,6 +190,13 @@ def schedueler(df):
     class_2_serviced = optimized_df[(optimized_df['vehicle_type'] == 'class 2 truck') & (
         optimized_df['status'] != 'turned over')].shape[0]
 
+    # -----------------------------
+
+    serviced_vehicles_schedule = optimized_df[optimized_df['status']
+                                              != 'turned over']
+    turnover_vehicles_schedule = optimized_df[optimized_df['status']
+                                              == 'turned over']
+
     result = {
         "revenue": revenue,
         "lost_revenue": lost_revenue,
@@ -204,8 +211,8 @@ def schedueler(df):
         "full_size_serviced": full_size_serviced,
         "class_1_serviced": class_1_serviced,
         "class_2_serviced": class_2_serviced,
-
-        "schedule": optimized_df.to_dict(orient='records')
+        "serviced_vehicles_schedule": serviced_vehicles_schedule.to_dict('records'),
+        "turnover_vehicles_schedule": turnover_vehicles_schedule.to_dict('records'),
     }
 
     return result
