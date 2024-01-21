@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import React, { useCallback } from "react";
-import moment from 'moment';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
+import React from "react";
+import moment from "moment";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
 
 import "./Calendar.css";
 
@@ -35,41 +35,48 @@ export const Calendar: React.FC<Props> = ({ data }) => {
     start: new Date(appointment.appointment_date),
     end: new Date(appointment.appointment_end_date),
     revenue: `Revenue: ${appointment.revenue}`,
-    status: `Status: ${appointment.status || 'Scheduled'}`,
+    status: `Status: ${appointment.status || "Scheduled"}`,
     bay: appointment.bay,
   }));
 
   function renderEventContent(eventInfo: any) {
-
     const colorMapping = {
-      'compact': '#D1FFBD',
-      'medium': '#D1FFBD',
-      'full-size': '#D1FFBD',
-      'class 1 truck': '#FFFF9E',
-      'class 2 truck': '#FFCCCB',
+      any1: "#FFCCCB",
+      any2: "#FFCBA7",
+      any3: "#F3F7A6",
+      any4: "#D1FFBD",
+      any5: "#ADD8E6",
+      "compact bay": "#E9D3FF",
+      "medium bay": "#BCA89F",
+      "full-size bay": "#8FD3CC",
+      "class 1 truck bay": "#BEBEBE",
+      "class 2 truck bay": "#469990",
     };
 
     const eventStyle = {
-      backgroundColor: (colorMapping as any)[eventInfo.event.title] || '#D1D1D1',
-      borderRadius: '3px',
-      color: '#00008B',
+      backgroundColor: (colorMapping as any)[eventInfo.event.extendedProps.bay] || "#D1D1D1",
+      borderRadius: "3px",
+      color: "#00008B",
       width: "100%",
-      height: "120%"
+      height: "120%",
     };
 
     const descriptionStyle = {
-      width: '100%',
-      overflow: 'hidden',
-      whiteSpace: 'normal',
+      width: "100%",
+      overflow: "hidden",
+      whiteSpace: "normal",
     };
 
-    const startTime = moment(eventInfo.event.start).format('h:mm A');
-    const endTime = moment(eventInfo.event.end).format('h:mm A');
-
+    const startTime = moment(eventInfo.event.start).format("h:mm A");
+    const endTime = moment(eventInfo.event.end).format("h:mm A");
 
     return (
       <div style={eventStyle}>
-        <p style={descriptionStyle}><b>{startTime.toString()} until {endTime.toString()}</b></p>
+        <p style={descriptionStyle}>
+          <b>
+            {startTime.toString()} until {endTime.toString()}
+          </b>
+        </p>
         <p style={{ width: "100%" }}>{eventInfo.event.title}</p>
         <br></br>
         <p style={descriptionStyle}>{eventInfo.event.extendedProps.revenue}</p>
@@ -81,20 +88,19 @@ export const Calendar: React.FC<Props> = ({ data }) => {
 
   return (
     <div>
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          weekends={true}
-          initialDate={"2022-10-01"}
-          initialView={'dayGridWeek'}
-          headerToolbar={{
-            right: 'prev,next',
-            center: 'title',
-            left: 'dayGridWeek',
-          }}
-          eventContent={renderEventContent}
-          events={events}
-        />
-
+      <FullCalendar
+        plugins={[dayGridPlugin]}
+        weekends={true}
+        initialDate={"2022-10-01"}
+        initialView={"dayGridWeek"}
+        headerToolbar={{
+          right: "prev,next",
+          center: "title",
+          left: "dayGridWeek",
+        }}
+        eventContent={renderEventContent}
+        events={events}
+      />
     </div>
   );
 };

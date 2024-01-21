@@ -21,6 +21,10 @@ function App() {
   const [results, setResults] = React.useState<any>(null)
 
   const handleSubmit = async () => {
+    if (!data) {
+      return;
+    }
+    
     setLoadingStatus(LoadingStatus.LOADING);
 
     const response = await postFile(data);
@@ -31,7 +35,7 @@ function App() {
     }
   };
 
-  console.log(data)
+  //console.log(data)
 
 
   return (
