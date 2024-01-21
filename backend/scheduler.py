@@ -1,60 +1,6 @@
 import pandas as pd
 import utils
-
-
-# Function to check if the end time of the appointment is over 7pm, if it is, we set the attribute of status
-# in the optimized dataframe to "turned over"
-def discard_booking_over_7pm(optimized_df):
-    # assign turnover status to end date over 7pm
-    optimized_df.loc[optimized_df['appointment_end_date'].dt.hour >= 19,
-                     'status'] = 'turned over'
-
-    return optimized_df
-
-
-# Function to get the total lost revenue
-def get_total_lost_revenue(df):
-    turned_over_appointments = df[df['status'] == 'turned over']
-
-    total_lost_revenue = turned_over_appointments['revenue'].sum()
-
-    return total_lost_revenue
-
-# Function to get the total revenue
-
-
-def get_total_revenue(df):
-    schedueled = df[df['status'] == 'scheduled']
-    get_total_revenue = schedueled['revenue'].sum()
-
-    return get_total_revenue
-
-
-def check_bay_status(current_time):
-    for bay, end_time in utils.service_bays_status.items():
-        if end_time != "" and end_time < current_time:
-            utils.service_bays_status[bay] = ""
-    return
-
-
-# Function to get the total earned revenue
-def sort_next_appointment_by_profitability(next_appointments, count=0):
-    current_time_profit = next_appointments.iloc[count]['profit_ratio']
-    next_biggest_count = count
-    for index, row in next_appointments[count:].iterrows():
-        if row['profit_ratio'] > current_time_profit:
-            return next_biggest_count - count
-        next_biggest_count += 1
-
-    return False
-
-
-def count_bays_available():
-    count = 0
-    for bay, end_time in utils.service_bays_status.items():
-        if end_time == "":
-            count += 1
-    return count
+from scheduler_utils import *
 
 
 # Algo
@@ -70,19 +16,19 @@ def schedule_car_repairs(df):
         appointment_time = row["appointment_date"]
         check_bay_status(appointment_time)
 
-        if row['status'] == 'turned over':
-            continue
+        # if row['status'] == 'turned over':
+        #     continue
 
-        if appointment_time > thirty_min_later:
-            count = 0
-            thirty_min_later = appointment_time + pd.Timedelta("30 minutes")
-            next_appointments = df[(df['appointment_date'] >= appointment_time) & (
-                df['appointment_date'] <= appointment_time + pd.Timedelta("30 minutes"))]
+        # if appointment_time > thirty_min_later:
+        #     count = 0
+        #     thirty_min_later = appointment_time + pd.Timedelta("30 minutes")
+        #     next_appointments = df[(df['appointment_date'] >= appointment_time) & (
+        #         df['appointment_date'] <= appointment_time + pd.Timedelta("30 minutes"))]
 
-        has_better_next_profit = sort_next_appointment_by_profitability(
-            next_appointments, count)
+        # has_better_next_profit = sort_next_appointment_by_profitability(
+        #     next_appointments, count)
 
-        count += 1
+        # count += 1
 
         available_bays = count_bays_available()
 
@@ -95,23 +41,23 @@ def schedule_car_repairs(df):
             df.at[index, 'bay'] = bay_name
 
         # check if it can take one of the any bays, if so take it
-        elif utils.service_bays_status["any1"] == "" and has_better_next_profit <= available_bays:
+        elif utils.service_bays_status["any1"] == "":
             utils.service_bays_status["any1"] = row["appointment_end_date"]
             df.at[index, 'bay'] = 'any1'
             df.at[index, 'status'] = 'scheduled'
-        elif utils.service_bays_status["any2"] == "" and has_better_next_profit <= available_bays:
+        elif utils.service_bays_status["any2"] == "":
             df.at[index, 'bay'] = 'any2'
             utils.service_bays_status["any2"] = row["appointment_end_date"]
             df.at[index, 'status'] = 'scheduled'
-        elif utils.service_bays_status["any3"] == "" and has_better_next_profit <= available_bays:
+        elif utils.service_bays_status["any3"] == "":
             df.at[index, 'bay'] = 'any3'
             utils.service_bays_status["any3"] = row["appointment_end_date"]
             df.at[index, 'status'] = 'scheduled'
-        elif utils.service_bays_status["any4"] == "" and has_better_next_profit <= available_bays:
+        elif utils.service_bays_status["any4"] == "":
             df.at[index, 'bay'] = 'any4'
             utils.service_bays_status["any4"] = row["appointment_end_date"]
             df.at[index, 'status'] = 'scheduled'
-        elif utils.service_bays_status["any5"] == "" and has_better_next_profit <= available_bays:
+        elif utils.service_bays_status["any5"] == "":
             df.at[index, 'bay'] = 'any5'
             utils.service_bays_status["any5"] = row["appointment_end_date"]
             df.at[index, 'status'] = 'scheduled'
