@@ -4,7 +4,7 @@ import moment from 'moment';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 
-import "./DropFile.css";
+import "./Calendar.css";
 
 export const Calendar = () => {
 
@@ -13,35 +13,46 @@ export const Calendar = () => {
             title: 'compact car',
             description: 'service bay: any 5 - compact car',
             start: '2022-10-12T10:30:00',
-            end: '2022-10-12T11:00:00',
-            backgroundColor: '#D1FFBD'
+            end: '2022-10-12T11:00:00'
+        },
+        {
+            title: 'medium car',
+            description: 'service bay: any 4 - medium car',
+            start: '2022-10-12T10:30:00',
+            end: '2022-10-12T11:00:00'
         },
         {
             title: 'c1 class truck',
             description: 'service bay: c1 class truck - c1 class truck',
             start: '2022-10-15T16:48:00',
-            end: '2022-10-15T17:48:00',
-            backgroundColor: '#FFFF9E'
+            end: '2022-10-15T17:48:00'
         },
         {
             title: 'c2 class truck',
             description: 'service bay: c2 class truck - c2 class truck',
             start: '2022-10-13T10:30:00',
-            end: '2022-10-13T12:30:00',
-            backgroundColor: '#FFCCCB'
+            end: '2022-10-13T12:30:00'
         }
     ]
 
     function renderEventContent(eventInfo: any) {
+
+        const colorMapping = {
+            'compact car': '#D1FFBD',
+            'medium car': '#D1FFBD',
+            'c1 class truck': '#FFFF9E',
+            'c2 class truck': '#FFCCCB',
+            // Add more title-color mappings as needed
+          };
+
         const eventStyle = {
-          backgroundColor: eventInfo.event.backgroundColor, // Use the backgroundColor from the event
+          backgroundColor: (colorMapping as any)[eventInfo.event.title] || '#D1D1D1', // Use the backgroundColor from the event
           padding: '5px',
           borderRadius: '3px',
           color: '#00008B', // Set text color to white for better visibility
           width:"100%",
           height:"120%"
         };
-
 
         const descriptionStyle = {
             width: '100%',
