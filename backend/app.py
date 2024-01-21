@@ -1,9 +1,10 @@
 import json
 from flask_cors import CORS
 from dotenv import dotenv_values
-from flask import Flask
-from flask import request
+from flask import Flask, request
+import pandas as pd
 import utils
+import scheduler
 
 
 PORT = dotenv_values(".env")["FLASK_RUN_PORT"]
@@ -26,9 +27,13 @@ def api():
 
     # convert string to pandas dataframe
     df = utils.string_to_df(body['data'])
-    print(df)
 
-    return "Hello"
+    results = scheduler.schedueler(df)
+
+    result_json = json.dumps(results, default=lambda x: int(
+        x) if isinstance(x, pd.Int64Dtype().type) else None, indent=2)
+
+    return result_json
 
 
 if __name__ == '__main__':
