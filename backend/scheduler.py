@@ -4,14 +4,10 @@ import utils
 
 # Function to check if the end time of the appointment is over 7pm, if it is, we set the attribute of status
 # in the optimized dataframe to "turned over"
-def discard_booking_over_7pm(df, optimized_df):
-    # Create a mask based on the condition that 'appointment_date' and 'call_request' should match
-    mask = (optimized_df['appointment_date'] == df['appointment_date']) & (
-        optimized_df['call_request'] == df['call_request'])
-
-    # Update the 'status' column in the DataFrame where the condition is met
-    optimized_df.loc[mask & (
-        df['appointment_end_date'].dt.hour > 19), 'status'] = 'turned over'
+def discard_booking_over_7pm(optimized_df):
+    # assign turnover status to end date over 7pm
+    optimized_df.loc[optimized_df['appointment_end_date'].dt.hour >= 19,
+                     'status'] = 'turned over'
 
     return optimized_df
 
@@ -74,6 +70,9 @@ def schedule_car_repairs(df):
         appointment_time = row["appointment_date"]
         check_bay_status(appointment_time)
 
+        if row['status'] == 'turned over':
+            continue
+
         if appointment_time > thirty_min_later:
             count = 0
             thirty_min_later = appointment_time + pd.Timedelta("30 minutes")
@@ -135,7 +134,7 @@ def schedueler(df):
     optimized_df = df.copy()
 
     # Discard the booking after 7pm, they are lost anyways
-    optimized_df = discard_booking_over_7pm(df, optimized_df)
+    optimized_df = discard_booking_over_7pm(optimized_df)
 
     optimized_df["reason"] = ""
 
@@ -144,6 +143,8 @@ def schedueler(df):
 
     # count turned over data
     count_turned_over = optimized_df['status'].eq('turned over').sum()
+
+    count_serviced = optimized_df['status'].eq('scheduled').sum()
 
     lost_revenue = get_total_lost_revenue(optimized_df)
 
@@ -211,6 +212,7 @@ def schedueler(df):
         "full_size_turnover": full_size_turnover,
         "class_1_turnover": class_1_turnover,
         "class_2_turnover": class_2_turnover,
+        "count_serviced": count_serviced,
         "compact_serviced": compact_serviced,
         "medium_serviced": medium_serviced,
         "full_size_serviced": full_size_serviced,
