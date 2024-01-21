@@ -16,6 +16,7 @@ def schedule_car_repairs(df):
         appointment_time = row["appointment_date"]
         check_bay_status(appointment_time)
 
+        # FIXME: Improve greedy selection of next appointment
         # if row['status'] == 'turned over':
         #     continue
 
