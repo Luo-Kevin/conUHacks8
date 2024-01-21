@@ -1,5 +1,6 @@
 import React from 'react';
 import DropFile from '../components/DropFile';
+import Calendar from '../components/Calendar';
 import useFile from '../hooks/useFile';
 import { postFile } from '../utils/api';
 import { Heading, Button } from '@chakra-ui/react'
@@ -26,6 +27,7 @@ function App() {
         </div>
       </div>
       <Button className='upload-file-button' onClick={handleSubmit} mx="auto" display="block">Upload</Button>
+      <Calendar/>
     </div>
   );
 }
