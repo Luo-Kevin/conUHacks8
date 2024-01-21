@@ -17,13 +17,20 @@ function App() {
     LOADED,
   }
   const [loadingStatus, setLoadingStatus] = React.useState<LoadingStatus>(LoadingStatus.INIT);
+  const [results, setResults] = React.useState<any>(null)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setLoadingStatus(LoadingStatus.LOADING);
     setTimeout(() => {
       setLoadingStatus(LoadingStatus.LOADED);
     }, 1000);
-    postFile(data);
+    const response = await postFile(data);
+    console.log(response)
+    if(response){
+      setResults(response)
+      console.log(response)
+      setLoadingStatus(LoadingStatus.LOADED)
+    }
   };
 
   return (
@@ -52,7 +59,7 @@ function App() {
             <ReportCards />
           </div>
           <div className="result-section-calendar">
-            <Calendar />
+            <Calendar data={results}/>
           </div>
         </div>
       )}
