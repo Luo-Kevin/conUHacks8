@@ -32,3 +32,9 @@
 .result-section-cards {
   margin-bottom: 40px;
 }
+
+.btn-section {
+  display: flex;
+  margin: auto auto;
+  align-items: center;
+}

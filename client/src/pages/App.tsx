@@ -7,6 +7,7 @@ import { Heading, Button, Spinner } from "@chakra-ui/react";
 
 import "./App.css";
 import ReportCards from "../components/ReportCards";
+import ExportBtn from "../components/ExportBtn";
 
 function App() {
   const { readFile, data, title } = useFile();
@@ -30,6 +31,9 @@ function App() {
     }
   };
 
+  console.log(data)
+
+
   return (
     <div className="main-container">
       <div className="landing-section">
@@ -42,15 +46,20 @@ function App() {
           <DropFile className="file-upload-section" readFile={readFile} title={title} />
         </div>
       </div>
-      <Button
-        isDisabled={loadingStatus === LoadingStatus.LOADING}
-        className="upload-file-button"
-        onClick={handleSubmit}
-        mx="auto"
-        display="block"
-      >
-        Upload
-      </Button>
+
+      <div className="btn-section">
+        <Button
+          isDisabled={loadingStatus === LoadingStatus.LOADING}
+          className="upload-file-button"
+          onClick={handleSubmit}
+          mx="auto"
+        // display="block"
+        >
+          Upload
+        </Button>
+        {results !== undefined ? <ExportBtn data={results?.serviced_vehicles_schedule} /> : ""}
+      </div>
+
 
       {loadingStatus === LoadingStatus.LOADING && (
         <div className="spinner">
