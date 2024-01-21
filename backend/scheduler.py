@@ -206,11 +206,11 @@ def schedueler(df):
         "full_size_turnover": full_size_turnover,
         "class_1_turnover": class_1_turnover,
         "class_2_turnover": class_2_turnover,
-        # "compact_serviced": compact_serviced,
-        # "medium_serviced": medium_serviced,
-        # "full_size_serviced": full_size_serviced,
-        # "class_1_serviced": class_1_serviced,
-        # "class_2_serviced": class_2_serviced,
+        "compact_serviced": compact_serviced,
+        "medium_serviced": medium_serviced,
+        "full_size_serviced": full_size_serviced,
+        "class_1_serviced": class_1_serviced,
+        "class_2_serviced": class_2_serviced,
 
         "schedule": optimized_df.to_dict(orient='records')
     }
