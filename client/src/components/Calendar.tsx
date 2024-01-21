@@ -81,19 +81,19 @@ export const Calendar: React.FC<Props> = ({ data }) => {
 
   return (
     <div>
-      <FullCalendar
-        plugins={[dayGridPlugin]}
-        weekends={true}
-        initialDate={"2022-10-01"}
-        initialView={'dayGridWeek'}
-        headerToolbar={{
-          right: 'prev,next',
-          center: 'title',
-          left: 'dayGridWeek,dayGridMonth',
-        }}
-        eventContent={renderEventContent}
-        events={events}
-      />
+        <FullCalendar
+          plugins={[dayGridPlugin]}
+          weekends={true}
+          initialDate={"2022-10-01"}
+          initialView={'dayGridWeek'}
+          headerToolbar={{
+            right: 'prev,next',
+            center: 'title',
+            left: 'dayGridWeek',
+          }}
+          eventContent={renderEventContent}
+          events={events}
+        />
 
     </div>
   );

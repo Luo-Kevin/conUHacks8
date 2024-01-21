@@ -68,7 +68,7 @@ function App() {
       )}
       {loadingStatus === LoadingStatus.LOADED && (
         <div className="result-section">
-          <div className="result-section-cards">
+          <div className="result-section-div">
             <ReportCards
               revenue={results.revenue}
               lost_revenue={results.lost_revenue}
@@ -86,7 +86,7 @@ function App() {
               class_2_serviced={results.class_2_serviced}
             />
           </div>
-          <div className="result-section-calendar">
+          <div className="result-section-div">
             <Calendar data={results} />
           </div>
         </div>
