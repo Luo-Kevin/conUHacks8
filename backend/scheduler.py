@@ -175,23 +175,17 @@ def schedueler(df):
 
     # -----------------------------
 
-    # number of compact cars that were serviced
     compact_serviced = optimized_df[(optimized_df['vehicle_type'] == 'compact') & (
         optimized_df['status'] != 'turned over')].shape[0]
 
-    # number of medium cars that were serviced
     medium_serviced = optimized_df[(optimized_df['vehicle_type'] == 'medium') & (
         optimized_df['status'] != 'turned over')].shape[0]
 
-    # number of full-size cars that were serviced
     full_size_serviced = optimized_df[(optimized_df['vehicle_type'] == 'full-size') & (
         optimized_df['status'] != 'turned over')].shape[0]
 
-    # number of class 1 trucks that were serviced
     class_1_serviced = optimized_df[(optimized_df['vehicle_type'] == 'class 1 truck') & (
         optimized_df['status'] != 'turned over')].shape[0]
-
-    # number of class 2 trucks that were serviced
 
     class_2_serviced = optimized_df[(optimized_df['vehicle_type'] == 'class 2 truck') & (
         optimized_df['status'] != 'turned over')].shape[0]
@@ -210,6 +204,7 @@ def schedueler(df):
         "full_size_serviced": full_size_serviced,
         "class_1_serviced": class_1_serviced,
         "class_2_serviced": class_2_serviced,
+
         "schedule": optimized_df.to_dict(orient='records')
     }
 
