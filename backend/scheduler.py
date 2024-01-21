@@ -145,6 +145,8 @@ def schedueler(df):
     # count turned over data
     count_turned_over = optimized_df['status'].eq('turned over').sum()
 
+    count_serviced = optimized_df['status'].eq('scheduled').sum()
+
     lost_revenue = get_total_lost_revenue(optimized_df)
 
     revenue = get_total_revenue(optimized_df)
@@ -206,6 +208,7 @@ def schedueler(df):
         "full_size_turnover": full_size_turnover,
         "class_1_turnover": class_1_turnover,
         "class_2_turnover": class_2_turnover,
+        "count_serviced": count_serviced,
         "compact_serviced": compact_serviced,
         "medium_serviced": medium_serviced,
         "full_size_serviced": full_size_serviced,
