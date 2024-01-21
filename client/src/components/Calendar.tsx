@@ -17,8 +17,8 @@ interface Appointment {
   
   interface Props {
     data: {
-      schedule: Appointment[];
-    } | null; // Make data nullable
+        schedule: Appointment[];
+    } | null; 
   }
   
  export const Calendar: React.FC<Props> = ({ data }) => {
@@ -26,61 +26,23 @@ interface Appointment {
       // Render some loading state or return null if data is not available
       return null;
     }
-
-    const getBackgroundColor = (vehicleType: string): string => {
-        switch (vehicleType) {
-          case 'full-size':
-            return '#D1FFBD';
-          case 'medium':
-            return '#FFFF9E';
-          default:
-            return '#D1D1D1';
-        }
-      };
   
     // Parse the schedule data to format suitable for FullCalendar
-    const events = data.schedule.map((appointment: Appointment) => ({
-      title: appointment.vehicle_type,
-      start: new Date(appointment.appointment_date),
-      end: new Date(appointment.appointment_end_date),
-      backgroundColor: getBackgroundColor(appointment.vehicle_type),
-      description: `Revenue: ${appointment.revenue} - Status: ${appointment.status || 'Scheduled'}`,
-    }));
-  
-    // const events = [
-    //     {
-    //         title: 'compact car',
-    //         description: 'service bay: any 5 - compact car',
-    //         start: '2022-10-12T10:30:00',
-    //         end: '2022-10-12T11:00:00'
-    //     },
-    //     {
-    //         title: 'medium car',
-    //         description: 'service bay: any 4 - medium car',
-    //         start: '2022-10-12T10:30:00',
-    //         end: '2022-10-12T11:00:00'
-    //     },
-    //     {
-    //         title: 'c1 class truck',
-    //         description: 'service bay: c1 class truck - c1 class truck',
-    //         start: '2022-10-15T16:48:00',
-    //         end: '2022-10-15T17:48:00'
-    //     },
-    //     {
-    //         title: 'c2 class truck',
-    //         description: 'service bay: c2 class truck - c2 class truck',
-    //         start: '2022-10-13T10:30:00',
-    //         end: '2022-10-13T12:30:00'
-    //     }
-    // ]
+    const events = data && data.schedule ? data.schedule.map((appointment: Appointment) => ({
+        title: appointment.vehicle_type,
+        start: new Date(appointment.appointment_date),
+        end: new Date(appointment.appointment_end_date),
+        description: `Revenue: ${appointment.revenue} - Status: ${appointment.status || 'Scheduled'}`,
+      })) : [];
 
     function renderEventContent(eventInfo: any) {
 
         const colorMapping = {
-            'compact car': '#D1FFBD',
-            'medium car': '#D1FFBD',
-            'c1 class truck': '#FFFF9E',
-            'c2 class truck': '#FFCCCB',
+            'compact': '#D1FFBD',
+            'medium': '#D1FFBD',
+            'full-size': '#D1FFBD',
+            'class 1 truck': '#FFFF9E',
+            'class 2 truck': '#FFCCCB',
           };
 
         const eventStyle = {
@@ -107,7 +69,6 @@ interface Appointment {
             <p style={{width:"100%"}}>{eventInfo.event.title}</p>
             <br></br>
             <p style={descriptionStyle}>{eventInfo.event.extendedProps.description}</p>
-            <p style={descriptionStyle}>TIME</p>
           </div>
         );
       }
@@ -117,6 +78,8 @@ interface Appointment {
         <FullCalendar
           plugins={[dayGridPlugin]}
           weekends={true}
+          initialDate={"2022-10-01"}
+          initialView={'dayGridWeek'}
           headerToolbar={{
             right: 'prev,next',
             center: 'title',
